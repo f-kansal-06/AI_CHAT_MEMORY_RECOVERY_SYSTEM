@@ -1,0 +1,14 @@
+# E0: Baselines evaluated on LongMemEval test set
+experiment_id: "E0"
+description: "All baselines on LongMemEval test split"
+seed: 42
+seeds: [13, 42, 2024]
+dataset: "longmemeval"
+baselines:
+  - "random"
+  - "recency"
+  - "length"
+  - "tfidf_lr"
+  - "minilm_lr"
+output_dir: "results/e0_baselines"
+

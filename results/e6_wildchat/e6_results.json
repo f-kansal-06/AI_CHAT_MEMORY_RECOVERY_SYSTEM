@@ -1,0 +1,15 @@
+{
+  "num_conversations": 50,
+  "total_turns": 489,
+  "score_distribution": {
+    "mean": 0.2090948224067688,
+    "std": 0.022320257499814034,
+    "median": 0.20185203850269318,
+    "p25": 0.2005741000175476,
+    "p75": 0.20334449410438538,
+    "p90": 0.2634877860546112,
+    "threshold_0.5_retained_ratio": 0.0,
+    "threshold_0.7_retained_ratio": 0.0,
+    "threshold_0.9_retained_ratio": 0.0
+  }
+}

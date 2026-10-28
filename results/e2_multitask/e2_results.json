@@ -1,0 +1,103 @@
+{
+  "model_name": "distilbert_multitask",
+  "n_test_turns": 2377,
+  "prevalence": 0.002103491796381994,
+  "turn_metrics": {
+    "pr_auc": 0.004058518143634046,
+    "roc_auc": 0.6829679595278246,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "ece": 0.3507473501754901,
+    "threshold": 0.4809776544570923
+  },
+  "ranking_metrics": {
+    "recall@5%": 0.0,
+    "ndcg@5%": 0.0,
+    "recall@10%": 0.0,
+    "ndcg@10%": 0.0,
+    "recall@20%": 0.2,
+    "ndcg@20%": 0.03241530487862446,
+    "mrr": 0.00841126739396967
+  },
+  "budget_retention": {
+    "5%": {
+      "evidence_recall": 0.0,
+      "all_evidence_retained_rate": 0.0,
+      "token_reduction": 0.9500074411305106,
+      "retained_tokens": 29561,
+      "total_tokens": 591308
+    },
+    "10%": {
+      "evidence_recall": 0.6,
+      "all_evidence_retained_rate": 0.6,
+      "token_reduction": 0.9000081175969208,
+      "retained_tokens": 59126,
+      "total_tokens": 591308
+    },
+    "20%": {
+      "evidence_recall": 0.6,
+      "all_evidence_retained_rate": 0.6,
+      "token_reduction": 0.8000179263598666,
+      "retained_tokens": 118251,
+      "total_tokens": 591308
+    },
+    "30%": {
+      "evidence_recall": 1.0,
+      "all_evidence_retained_rate": 1.0,
+      "token_reduction": 0.7000328086208879,
+      "retained_tokens": 177373,
+      "total_tokens": 591308
+    },
+    "50%": {
+      "evidence_recall": 1.0,
+      "all_evidence_retained_rate": 1.0,
+      "token_reduction": 0.50005580847883,
+      "retained_tokens": 295621,
+      "total_tokens": 591308
+    }
+  },
+  "slices": {
+    "speaker_user": {
+      "pr_auc": 0.005327472177591233,
+      "roc_auc": 0.5225255972696246,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "ece": 0.36225736832456656,
+      "threshold": 0.4809776544570923
+    },
+    "speaker_assistant": {
+      "pr_auc": 0.0,
+      "roc_auc": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "ece": 0.3394579453517993,
+      "threshold": 0.4809776544570923
+    },
+    "len_long_>50": {
+      "pr_auc": 0.004058518143634046,
+      "roc_auc": 0.6829679595278246,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "ece": 0.3507473501754901,
+      "threshold": 0.4809776544570923
+    },
+    "category_other": {
+      "pr_auc": 0.004058518143634046,
+      "roc_auc": 0.6829679595278246,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "ece": 0.3507473782977488,
+      "threshold": 0.4809776544570923
+    }
+  },
+  "efficiency": {
+    "num_parameters": 66959624,
+    "size_on_disk_mb": 255.47100448608398,
+    "cpu_latency_ms": 100.09884000010061
+  }
+}

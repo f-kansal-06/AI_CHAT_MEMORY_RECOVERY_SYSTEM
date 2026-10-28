@@ -1,0 +1,97 @@
+[
+  {
+    "fold": 0,
+    "train_conv_ids": [
+      "conv-44",
+      "conv-43",
+      "conv-26",
+      "conv-42",
+      "conv-48",
+      "conv-47"
+    ],
+    "val_conv_ids": [
+      "conv-30",
+      "conv-50"
+    ],
+    "test_conv_ids": [
+      "conv-49",
+      "conv-41"
+    ]
+  },
+  {
+    "fold": 1,
+    "train_conv_ids": [
+      "conv-49",
+      "conv-41",
+      "conv-26",
+      "conv-42",
+      "conv-48",
+      "conv-47"
+    ],
+    "val_conv_ids": [
+      "conv-44",
+      "conv-43"
+    ],
+    "test_conv_ids": [
+      "conv-30",
+      "conv-50"
+    ]
+  },
+  {
+    "fold": 2,
+    "train_conv_ids": [
+      "conv-49",
+      "conv-41",
+      "conv-30",
+      "conv-50",
+      "conv-48",
+      "conv-47"
+    ],
+    "val_conv_ids": [
+      "conv-26",
+      "conv-42"
+    ],
+    "test_conv_ids": [
+      "conv-44",
+      "conv-43"
+    ]
+  },
+  {
+    "fold": 3,
+    "train_conv_ids": [
+      "conv-49",
+      "conv-41",
+      "conv-30",
+      "conv-50",
+      "conv-44",
+      "conv-43"
+    ],
+    "val_conv_ids": [
+      "conv-48",
+      "conv-47"
+    ],
+    "test_conv_ids": [
+      "conv-26",
+      "conv-42"
+    ]
+  },
+  {
+    "fold": 4,
+    "train_conv_ids": [
+      "conv-30",
+      "conv-50",
+      "conv-44",
+      "conv-43",
+      "conv-26",
+      "conv-42"
+    ],
+    "val_conv_ids": [
+      "conv-49",
+      "conv-41"
+    ],
+    "test_conv_ids": [
+      "conv-48",
+      "conv-47"
+    ]
+  }
+]

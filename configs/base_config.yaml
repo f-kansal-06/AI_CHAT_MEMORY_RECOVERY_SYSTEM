@@ -1,0 +1,29 @@
+# Base configuration for conversation memory importance benchmark
+
+seed: 42
+seeds: [13, 42, 2024]
+model_name_or_path: "distilbert-base-uncased"
+context_window: 1
+max_length: 256
+batch_size: 16
+epochs: 3
+lr: 2.0e-5
+weight_decay: 0.01
+warmup_ratio: 0.10
+grad_clip: 1.0
+patience: 2
+aux_weight: 0.0
+max_train_turns: null  # Optional turn cap for fast laptop/lab runs
+
+# Data paths
+paths:
+  longmemeval_raw: "data/raw/longmemeval_s.json"
+  locomo_raw: "data/raw/locomo.json"
+  custom_raw: "data/raw/custom_4221.jsonl"
+  wildchat_raw: "data/raw/wildchat_sample.jsonl"
+  processed_dir: "data/processed"
+  splits_dir: "data/splits"
+  reports_dir: "reports"
+  results_dir: "results"
+  checkpoints_dir: "checkpoints"
+

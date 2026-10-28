@@ -1,0 +1,536 @@
+{
+  "distilbert": {
+    "cut_25%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.0497772403716739,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 6916,
+        "pre_cut_tokens": 138939
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.0996840340005326,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 13850,
+        "pre_cut_tokens": 138939
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.19967035893449644,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 27742,
+        "pre_cut_tokens": 138939
+      }
+    },
+    "cut_50%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.04994808496931359,
+        "eligible_questions": 1,
+        "recovered_questions": 0,
+        "restored_tokens": 14576,
+        "pre_cut_tokens": 291823
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09995442442850631,
+        "eligible_questions": 1,
+        "recovered_questions": 0,
+        "restored_tokens": 29169,
+        "pre_cut_tokens": 291823
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.1999533964080967,
+        "eligible_questions": 1,
+        "recovered_questions": 0,
+        "restored_tokens": 58351,
+        "pre_cut_tokens": 291823
+      }
+    },
+    "cut_75%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.049969717400495946,
+        "eligible_questions": 3,
+        "recovered_questions": 0,
+        "restored_tokens": 21864,
+        "pre_cut_tokens": 437545
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09993943480099189,
+        "eligible_questions": 3,
+        "recovered_questions": 0,
+        "restored_tokens": 43728,
+        "pre_cut_tokens": 437545
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.19997485972871362,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 87498,
+        "pre_cut_tokens": 437545
+      }
+    }
+  },
+  "tfidf_lr": {
+    "cut_25%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.04991399103203564,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 6935,
+        "pre_cut_tokens": 138939
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09991435090219448,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 13882,
+        "pre_cut_tokens": 138939
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.19991507064251218,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 27776,
+        "pre_cut_tokens": 138939
+      }
+    },
+    "cut_50%": {
+      "budget_5%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.04998235231630132,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 14586,
+        "pre_cut_tokens": 291823
+      },
+      "budget_10%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.09997498483669896,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 29175,
+        "pre_cut_tokens": 291823
+      },
+      "budget_20%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.19998423702038565,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 58360,
+        "pre_cut_tokens": 291823
+      }
+    },
+    "cut_75%": {
+      "budget_5%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.04998343027574307,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 21870,
+        "pre_cut_tokens": 437545
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.09996000411386258,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 43737,
+        "pre_cut_tokens": 437545
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.6666666666666666,
+        "evidence_recall": 0.6666666666666666,
+        "compression_ratio": 0.1999862871247529,
+        "eligible_questions": 3,
+        "recovered_questions": 2,
+        "restored_tokens": 87503,
+        "pre_cut_tokens": 437545
+      }
+    }
+  },
+  "minilm_lr": {
+    "cut_25%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.04996437285427418,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 6942,
+        "pre_cut_tokens": 138939
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09987836388630981,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 13877,
+        "pre_cut_tokens": 138939
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.1998790836266275,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 27771,
+        "pre_cut_tokens": 138939
+      }
+    },
+    "cut_50%": {
+      "budget_5%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.049954938438711134,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 14578,
+        "pre_cut_tokens": 291823
+      },
+      "budget_10%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.09997841157139772,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 29176,
+        "pre_cut_tokens": 291823
+      },
+      "budget_20%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.1999773835509881,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 58358,
+        "pre_cut_tokens": 291823
+      }
+    },
+    "cut_75%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.04998571575495092,
+        "eligible_questions": 3,
+        "recovered_questions": 0,
+        "restored_tokens": 21871,
+        "pre_cut_tokens": 437545
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.09997371698910969,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 43743,
+        "pre_cut_tokens": 437545
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.19997257424950576,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 87497,
+        "pre_cut_tokens": 437545
+      }
+    }
+  },
+  "recency": {
+    "cut_25%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.04992838583838951,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 6937,
+        "pre_cut_tokens": 138939
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09995033791807915,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 13887,
+        "pre_cut_tokens": 138939
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.1999006758361583,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 27774,
+        "pre_cut_tokens": 138939
+      }
+    },
+    "cut_50%": {
+      "budget_5%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.049975498846903776,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 14584,
+        "pre_cut_tokens": 291823
+      },
+      "budget_10%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.09997498483669896,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 29175,
+        "pre_cut_tokens": 291823
+      },
+      "budget_20%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.1999773835509881,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 58358,
+        "pre_cut_tokens": 291823
+      }
+    },
+    "cut_75%": {
+      "budget_5%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.04998343027574307,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 21870,
+        "pre_cut_tokens": 437545
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.09998971534356466,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 43750,
+        "pre_cut_tokens": 437545
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.19998857260396075,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 87504,
+        "pre_cut_tokens": 437545
+      }
+    }
+  },
+  "length": {
+    "cut_25%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.04996437285427418,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 6942,
+        "pre_cut_tokens": 138939
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09987116648313289,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 13876,
+        "pre_cut_tokens": 138939
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.19991507064251218,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 27776,
+        "pre_cut_tokens": 138939
+      }
+    },
+    "cut_50%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.049978925581602544,
+        "eligible_questions": 1,
+        "recovered_questions": 0,
+        "restored_tokens": 14585,
+        "pre_cut_tokens": 291823
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09994757095910878,
+        "eligible_questions": 1,
+        "recovered_questions": 0,
+        "restored_tokens": 29167,
+        "pre_cut_tokens": 291823
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.1999910904897832,
+        "eligible_questions": 1,
+        "recovered_questions": 0,
+        "restored_tokens": 58362,
+        "pre_cut_tokens": 291823
+      }
+    },
+    "cut_75%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.04998800123415877,
+        "eligible_questions": 3,
+        "recovered_questions": 0,
+        "restored_tokens": 21872,
+        "pre_cut_tokens": 437545
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09999200082277251,
+        "eligible_questions": 3,
+        "recovered_questions": 0,
+        "restored_tokens": 43751,
+        "pre_cut_tokens": 437545
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.1999954290415843,
+        "eligible_questions": 3,
+        "recovered_questions": 0,
+        "restored_tokens": 87507,
+        "pre_cut_tokens": 437545
+      }
+    }
+  },
+  "random": {
+    "cut_25%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.049863609209797106,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 6928,
+        "pre_cut_tokens": 138939
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.09994314051490222,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 13886,
+        "pre_cut_tokens": 138939
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.19995105765839685,
+        "eligible_questions": 0,
+        "recovered_questions": 0,
+        "restored_tokens": 27781,
+        "pre_cut_tokens": 138939
+      }
+    },
+    "cut_50%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.049975498846903776,
+        "eligible_questions": 1,
+        "recovered_questions": 0,
+        "restored_tokens": 14584,
+        "pre_cut_tokens": 291823
+      },
+      "budget_10%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.09997155810200019,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 29174,
+        "pre_cut_tokens": 291823
+      },
+      "budget_20%": {
+        "recovery_coverage": 1.0,
+        "evidence_recall": 1.0,
+        "compression_ratio": 0.1999396894693016,
+        "eligible_questions": 1,
+        "recovered_questions": 1,
+        "restored_tokens": 58347,
+        "pre_cut_tokens": 291823
+      }
+    },
+    "cut_75%": {
+      "budget_5%": {
+        "recovery_coverage": 0.0,
+        "evidence_recall": 0.0,
+        "compression_ratio": 0.04996286096287239,
+        "eligible_questions": 3,
+        "recovered_questions": 0,
+        "restored_tokens": 21861,
+        "pre_cut_tokens": 437545
+      },
+      "budget_10%": {
+        "recovery_coverage": 0.3333333333333333,
+        "evidence_recall": 0.3333333333333333,
+        "compression_ratio": 0.09998971534356466,
+        "eligible_questions": 3,
+        "recovered_questions": 1,
+        "restored_tokens": 43750,
+        "pre_cut_tokens": 437545
+      },
+      "budget_20%": {
+        "recovery_coverage": 0.6666666666666666,
+        "evidence_recall": 0.6666666666666666,
+        "compression_ratio": 0.19998171616633717,
+        "eligible_questions": 3,
+        "recovered_questions": 2,
+        "restored_tokens": 87501,
+        "pre_cut_tokens": 437545
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+# E6: WildChat-1M analysis
+experiment_id: "E6"
+description: "Unlabeled scoring, score distribution, token reduction, and 100 top/bottom turns review export"
+dataset: "wildchat"
+max_conversations: 500
+min_turns: 6
+model_checkpoint: "results/e1_longmemeval/seed_42/best_model.pt"
+output_dir: "results/e6_wildchat"
+review_csv: "reports/wildchat_review.csv"
+

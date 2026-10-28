@@ -1,0 +1,20 @@
+# E1: DistilBERT fine-tuning on LongMemEval (importance head only)
+experiment_id: "E1"
+description: "DistilBERT importance head on LongMemEval"
+seed: 42
+seeds: [13, 42, 2024]
+dataset: "longmemeval"
+model_name_or_path: "distilbert-base-uncased"
+context_window: 1
+max_length: 256
+batch_size: 16
+epochs: 3
+lr: 2.0e-5
+weight_decay: 0.01
+warmup_ratio: 0.10
+grad_clip: 1.0
+patience: 2
+aux_weight: 0.0
+max_train_turns: 2000
+output_dir: "results/e1_longmemeval"
+

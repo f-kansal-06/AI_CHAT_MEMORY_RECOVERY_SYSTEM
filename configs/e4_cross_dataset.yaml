@@ -1,0 +1,7 @@
+# E4: Cross-dataset evaluation: Best model trained on LongMemEval evaluated on LoCoMo
+experiment_id: "E4"
+description: "LongMemEval-trained model evaluated directly on LoCoMo (zero-shot transfer)"
+source_model_checkpoint: "results/e1_longmemeval/seed_42/best_model.pt"
+target_dataset: "locomo"
+output_dir: "results/e4_cross_dataset"
+

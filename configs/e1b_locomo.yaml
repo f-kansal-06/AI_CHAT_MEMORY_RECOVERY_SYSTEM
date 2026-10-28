@@ -1,0 +1,19 @@
+# E1b: DistilBERT fine-tuning and evaluation on LoCoMo (5-fold grouped CV)
+experiment_id: "E1b"
+description: "DistilBERT on LoCoMo with 5-fold grouped CV by conversation"
+seed: 42
+dataset: "locomo"
+model_name_or_path: "distilbert-base-uncased"
+context_window: 1
+max_length: 256
+batch_size: 16
+epochs: 3
+lr: 2.0e-5
+weight_decay: 0.01
+warmup_ratio: 0.10
+grad_clip: 1.0
+patience: 2
+aux_weight: 0.0
+n_folds: 5
+output_dir: "results/e1b_locomo"
+

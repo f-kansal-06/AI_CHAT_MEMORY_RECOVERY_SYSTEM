@@ -1,0 +1,14 @@
+{
+  "initial_convs": 25,
+  "train_convs": 17,
+  "val_convs": 3,
+  "test_convs": 5,
+  "dropped_val_sessions_due_to_leakage": 2,
+  "dropped_test_sessions_due_to_leakage": 8,
+  "train_turns": 8608,
+  "val_turns": 1460,
+  "test_turns": 2377,
+  "train_pos": 18,
+  "val_pos": 3,
+  "test_pos": 5
+}

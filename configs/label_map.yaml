@@ -1,0 +1,69 @@
+# Shared taxonomy mapping for question categories across datasets
+# Target coarse taxonomy:
+# - single_fact
+# - multi_hop
+# - temporal
+# - knowledge_update
+# - preference
+# - other
+# - none
+
+shared_categories:
+  - single_fact
+  - multi_hop
+  - temporal
+  - knowledge_update
+  - preference
+  - other
+  - none
+
+# LongMemEval mappings:
+# LongMemEval defines categories such as:
+# 'single_session_fact', 'multi_session_fact', 'temporal_reasoning',
+# 'preference', 'knowledge_update', 'shared_session_reasoning'
+longmemeval:
+  single_session_fact: single_fact
+  single_fact: single_fact
+  fact_retrieval: single_fact
+  multi_session_fact: multi_hop
+  multi_hop: multi_hop
+  reasoning: multi_hop
+  temporal_reasoning: temporal
+  temporal: temporal
+  temporal_order: temporal
+  knowledge_update: knowledge_update
+  update: knowledge_update
+  preference: preference
+  user_preference: preference
+  other: other
+  none: none
+
+# LoCoMo mappings:
+# LoCoMo QA items have question categories (often numbered 1..5 or named:
+# 1: single fact retrieval, 2: multi-hop / multi-session reasoning, 3: temporal query,
+# 4: causal / explanation reasoning, 5: user attribute / preference)
+locomo:
+  "1": single_fact
+  "2": multi_hop
+  "3": temporal
+  "4": other
+  "5": preference
+  single_fact: single_fact
+  multi_hop: multi_hop
+  temporal: temporal
+  causal: other
+  preference: preference
+  other: other
+  none: none
+
+# Custom dataset mappings (default heuristic fallback):
+custom:
+  single_fact: single_fact
+  fact: single_fact
+  multi_hop: multi_hop
+  temporal: temporal
+  knowledge_update: knowledge_update
+  preference: preference
+  other: other
+  none: none
+
