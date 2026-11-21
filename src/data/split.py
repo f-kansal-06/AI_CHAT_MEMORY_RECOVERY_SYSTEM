@@ -23,6 +23,14 @@ def compute_session_hash(session_turns: List[Dict[str, Any]]) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def _split_session_hashes(turns: List[Dict[str, Any]]) -> Set[str]:
+    sessions: Dict[Tuple[str, str], List[Dict[str, Any]]] = {}
+    for turn in turns:
+        key = (str(turn["conv_id"]), str(turn["session_id"]))
+        sessions.setdefault(key, []).append(turn)
+    return {compute_session_hash(rows) for rows in sessions.values()}
+
+
 def split_longmemeval(
     turns: List[Dict[str, Any]],
     train_ratio: float = 0.70,
@@ -118,6 +126,9 @@ def split_longmemeval(
         "train_pos": sum(1 for t in train_turns if t.get("label") == 1),
         "val_pos": sum(1 for t in val_turns if t.get("label") == 1),
         "test_pos": sum(1 for t in test_turns if t.get("label") == 1),
+        "train_val_session_hash_overlap": len(_split_session_hashes(train_turns) & _split_session_hashes(val_turns)),
+        "train_test_session_hash_overlap": len(_split_session_hashes(train_turns) & _split_session_hashes(test_turns)),
+        "val_test_session_hash_overlap": len(_split_session_hashes(val_turns) & _split_session_hashes(test_turns)),
     }
 
     return train_turns, val_turns, test_turns, stats

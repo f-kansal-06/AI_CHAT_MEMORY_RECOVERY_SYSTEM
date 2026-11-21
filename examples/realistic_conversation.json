@@ -1,0 +1,13 @@
+{
+  "title": "Research project planning",
+  "messages": [
+    {"role": "user", "content": "We are building a local conversation memory and recovery system. It must run without external chatbot APIs."},
+    {"role": "assistant", "content": "One option is to send every conversation to a hosted LLM for summarization."},
+    {"role": "user", "content": "Do not use hosted APIs. Keep all conversation data local, and use SQLite for persistent storage."},
+    {"role": "assistant", "content": "Understood. We will use SQLite and local processing."},
+    {"role": "user", "content": "Please preserve disagreements and uncertain claims separately from confirmed decisions. Source references are required."},
+    {"role": "assistant", "content": "The original research pipeline has turn-level importance classifiers, but those models do not extract structured facts by themselves."},
+    {"role": "user", "content": "Agreed. Keep importance ranking separate from fact extraction. Next, validate recovery using the stored memory only."},
+    {"role": "assistant", "content": "We still need to decide which optional local language model, if any, improves extraction quality."}
+  ]
+}

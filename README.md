@@ -1,123 +1,102 @@
-# Conversation Memory Importance Model: Data → Train → Test → Eval
+# Local Conversational Memory & Recovery
 
-A research-style machine learning pipeline evaluating turn-level conversational memory importance. Given multi-session conversations, the model predicts which turns are worth retaining in a compact memory buffer to preserve crucial evidence for downstream recall and simulated failure recovery.
+This repository now includes a terminal application that imports conversation exports, extracts structured memory locally, stores source conversations and memories in SQLite, and reconstructs a continuation brief using the saved memory. It does not call ChatGPT, Gemini, or any hosted chatbot API.
 
----
+The original research pipeline remains under `src/data`, `src/models`, `src/baselines`, `src/eval`, and `scripts`. Its DistilBERT classifier predicts turn importance; it does not extract facts or establish whether a claim is true. The product layer keeps extraction and importance ranking separate.
 
-## 1. Problem Statement & Task Formulation
+## Run the local application
 
-Chat assistants and conversational agents accumulate long context histories spanning dozens of sessions. Standard conversational sliding windows discard early turns indiscriminately via FIFO (First-In-First-Out) truncation, dropping critical user facts, preferences, and multi-session dependencies.
+Use the project virtual environment on Windows:
 
-This pipeline fine-tunes a `distilbert-base-uncased` encoder for turn-level memory scoring:
-- **Input**: `[speaker] current_turn [SEP] previous_turn_context` (configurable context window of 0, 1, or 2 turns; max sequence length 256).
-- **Output**: Memory-importance score $\hat{y} \in [0, 1]$ indicating the probability that the turn is essential evidence for downstream memory tasks.
-- **Loss**: Binary Cross-Entropy with `pos_weight` dynamically derived from training prevalence to address extreme class imbalance.
-- **Optional Auxiliary Head**: Multi-task cross-entropy predicting coarse question categories (`single_fact`, `multi_hop`, `temporal`, `knowledge_update`, `preference`, `other`, `none`).
-
----
-
-## 2. Benchmark Datasets
-
-| Dataset | Nature | Scope | Evidence Annotation | Split Protocol |
-|---|---|---|---|---|
-| **LongMemEval (`_S`)** | Gold Benchmark | 500 multi-session haystacks (~245k turns) | Field `has_answer` (`true`/`false`) | Grouped by haystack (70/15/15) with session-hash disjointness |
-| **LoCoMo** | Gold External | 10 multi-session long conversations (5,882 turns) | References like `"D1:3"` in QA items | 5-Fold Grouped Cross-Validation by conversation |
-| **Custom Dataset** | Messy / Realistic | 147 conversations (3,574 turns) | Weak keyword/entity heuristics | 70/15/15 grouped by conversation (isolated train/eval) |
-| **WildChat-1M** | Unlabeled Analysis | Real user ChatGPT interactions | None (unlabeled) | Qualitative scoring & token-reduction review sample |
-
----
-
-## 3. Baselines
-
-All baselines are evaluated via identical interfaces:
-1. **Random**: Independent uniform random scores $\sim U(0, 1)$.
-2. **Recency (Truncation)**: Normalized temporal turn index $t / T$ (simulates standard FIFO context sliding buffer).
-3. **Turn Length**: Longer turns score higher, normalized by token count.
-4. **TF-IDF + Logistic Regression**: Unigram + bigram TF-IDF features with balanced class-weighted Logistic Regression.
-5. **Frozen MiniLM + Logistic Regression**: Embeddings from `sentence-transformers/all-MiniLM-L6-v2` with balanced Logistic Regression.
-6. **Fine-Tuned DistilBERT** (Primary model).
-
----
-
-## 4. Key Results Summary
-
-| Model | LongMemEval PR-AUC | LongMemEval ROC-AUC | LongMemEval F1 | LoCoMo PR-AUC (CV) | LoCoMo ROC-AUC | Custom PR-AUC | Custom ROC-AUC |
-|---|---|---|---|---|---|---|---|
-| **Random** | 0.004 | 0.498 | 0.007 | 0.244 | 0.501 | 0.155 | 0.504 |
-| **Recency** | 0.006 | 0.512 | 0.011 | 0.268 | 0.528 | 0.178 | 0.536 |
-| **Length** | 0.012 | 0.589 | 0.021 | 0.312 | 0.574 | 0.210 | 0.562 |
-| **TF-IDF + LR** | 0.084 | 0.742 | 0.096 | 0.384 | 0.652 | 0.342 | 0.688 |
-| **MiniLM + LR** | 0.098 | 0.765 | 0.114 | 0.412 | 0.689 | 0.368 | 0.714 |
-| **DistilBERT** | **0.248** | **0.864** | **0.282** | **0.548 ± 0.03** | **0.792** | **0.512** | **0.834** |
-
-### Key Takeaways:
-1. **Recency Fails**: Standard FIFO sliding windows achieve near-random recall on early evidence needles.
-2. **DistilBERT Excels**: DistilBERT achieves a 2.5x to 3x gain in PR-AUC over linear baselines on the needle-in-a-haystack setting.
-3. **Budgeted Retention**: Retaining the top 10%–20% of turns by predicted importance preserves over 75% of critical evidence while achieving 80%–90% token reduction.
-4. **Statistical Significance**: Paired conversation-level bootstrap tests confirm DistilBERT's improvement over TF-IDF is statistically significant ($p < 0.001$, 95% CI $[+0.112, +0.236]$).
-
----
-
-## 5. Simulated Failure Recovery (E7)
-
-Experiment E7 evaluates offline simulation of sudden chat session failure (cutoff points at 25%, 50%, and 75% of conversation length):
-- **Measurement**: Evaluates whether the necessary evidence turns were retained in the compact memory buffer before the cut, and what fraction of affected questions had 100% of their evidence preserved.
-- **Clarification**: This metric strictly measures whether necessary evidence is preserved, not whether a downstream LLM generates a correct natural language answer.
-
----
-
-## 6. Known Limitations
-
-1. **Negative Label Definition**: A label of `0` strictly denotes that a turn was not selected as gold evidence for any benchmark question. Negatives are "not asked about", not "inherently useless conversational fluff".
-2. **Small Public LoCoMo Sample**: Public LoCoMo consists of ~10 conversations, necessitating 5-fold cross-validation strictly grouped by conversation to prevent data leakage.
-3. **Synthetic Nature of Gold Benchmarks**: Both LongMemEval and LoCoMo rely on synthetic haystacks and persona scripts; real human conversations feature more colloquial noise, typos, and implicit references.
-4. **English Only**: The pipeline explicitly filters for English conversations; multilingual performance remains unbenchmarked.
-5. **Custom Dataset Label Provenance**: Labels in the custom dataset were generated using heuristic keyword and entity rules, introducing weak-supervision noise. It is used as an exploratory supplement and isolated from gold evaluation splits.
-
----
-
-## 7. Repository Layout & Reproduction
-
-```
-├── configs/            # Experiment YAML configs + label_map.yaml
-├── data/               # raw/, processed/, splits/
-├── src/
-│   ├── data/           # Loaders, cleaning, schema, splitting
-│   ├── baselines/      # Heuristics, TF-IDF+LR, MiniLM+LR
-│   ├── models/         # DistilBERT architecture
-│   ├── eval/           # Metrics, recovery simulation, bootstrap CIs
-│   ├── train.py        # DistilBERT training loop
-│   └── evaluate.py     # Unified evaluation runner
-├── scripts/
-│   ├── audit_data.py   # Dataset audits (generates reports/audit_*.md)
-│   ├── prepare_data.py # Data preprocessing and leakage-safe splits
-│   ├── run_all_experiments.py # Master runner (E0 - E7)
-│   └── make_report.py  # Results report & plots generator
-├── tests/              # Unit tests (pytest test_pipeline.py)
-├── reports/            # Audits, lab_summary.md, results.md, plots
-├── results/            # Detailed JSON metrics per run
-├── DATA_SOURCES.md     # Official data sources & commits
-├── ASSUMPTIONS.md      # Engineering & research decisions
-└── requirements.txt    # Pinned dependencies
+```powershell
+.\.venv\Scripts\Activate.ps1
+python chat_memory.py
 ```
 
-### Reproducing All Results:
-```bash
-# 1. Run unit tests
-pytest -v tests/test_pipeline.py
+Or run one import without opening the menu:
 
-# 2. Run data audit
-python scripts/audit_data.py
-
-# 3. Run all experiments end-to-end
-python scripts/run_all_experiments.py
-
-# 4. Generate master report
-python scripts/make_report.py
-```
-Or execute the automated script:
-```bash
-./scripts/run_experiments.sh   # On Linux / Mac / WSL
-powershell ./scripts/run_experiments.ps1 # On Windows
+```powershell
+python chat_memory.py --import-file examples/realistic_conversation.json
 ```
 
+The menu supports file or manual import, analysis, browsing, recovery, search, size comparison, saved model evaluation, deletion, and exit. For manual input, choose **Import conversation file** and enter `manual`; use `User:` and `Assistant:` prefixes and finish with `/done`.
+
+Supported formats:
+
+- TXT transcripts with `User:` / `Assistant:` labels; unmarked paragraphs are treated as user messages.
+- JSON objects containing `messages`, `conversation`, or `turns`, or a JSON list of message objects.
+- Single-conversation ChatGPT-style JSON exports with a `mapping` of message nodes.
+- JSONL with one message object per line.
+
+The default SQLite database is `data/chat_memory.sqlite3`. Override it with `--db PATH`. Re-importing identical message content returns the existing conversation instead of duplicating it. Deleting a conversation also deletes its messages, memories, and processing runs.
+
+Try the demo in the CLI:
+
+1. Import `examples/realistic_conversation.json`.
+2. Select the imported conversation and analyze it.
+3. Review the stored memory, then recover it. The recovery renderer reads the memory table and source IDs; it does not reread transcript messages.
+4. Search for `SQLite` and compare original versus retained token counts.
+
+For a one-command end-to-end walkthrough (using a temporary database and the saved local classifier when available):
+
+```powershell
+python scripts/demo_memory.py
+```
+
+## Memory extraction and boundaries
+
+The required extractor is deterministic local rule-based NLP, with no generative model and no remote calls. It stores short fact, preference, requirement, decision, agreement, suggestion, rejected suggestion, uncertainty, unresolved question, disputed claim, conclusion, and next-action entries. Each entry records source message IDs, status, confidence, and importance. Exact duplicate entries link to all their source messages. Likely polarity conflicts receive a shared review group.
+
+This approach is an initial, inspectable baseline. It does not perform general semantic entailment, reliably resolve pronouns, or guarantee that an arbitrary disagreement is detected. A suggestion is not automatically an agreed fact. Review disputed and low-confidence items before relying on a recovery brief.
+
+The saved importance model is optional. When `results/tuning/tuning_results.json` and its checkpoint are available, analysis combines the model's turn-salience score with the extractor's structural score. Otherwise, analysis reports and uses rule-based importance alone. The model score cannot convert a suggestion or uncertain statement into a confirmed fact.
+
+## Train and evaluate the local importance model
+
+The tuning script uses a seeded randomized subset of the hyperparameter grid, validation PR-AUC for checkpoint selection, early stopping, class-weighted loss, and one held-out test evaluation after model selection. It saves each trial checkpoint, configuration, training curve, and a comparison report.
+
+```powershell
+python scripts/tune_memory_model.py --dataset custom --trials 5 --max-train-turns 2000
+```
+
+`custom` has weak heuristic labels, so the resulting metrics are exploratory and must not be presented as gold-standard generalization. `--dataset longmemeval` is available, but this workspace's prepared validation set has only 3 positive examples, too few for stable hyperparameter selection. Acquire the full benchmark and create reliable splits before drawing stronger conclusions.
+
+The pretrained `distilbert-base-uncased` weights and tokenizer must already be available locally (or downloaded before running in an environment with network access). Training and CLI inference default to local-only loading. Missing weights cause a clear error; there is no silent random-weight fallback. CUDA is selected automatically when available; otherwise training uses CPU.
+
+To cache the encoder and tokenizer before switching to offline mode, run once while model downloads are allowed:
+
+```powershell
+python -c "from transformers import AutoTokenizer, DistilBertModel; AutoTokenizer.from_pretrained('distilbert-base-uncased'); DistilBertModel.from_pretrained('distilbert-base-uncased')"
+```
+
+Tuning outputs are written under `results/tuning/`. The selected checkpoint path is recorded in `results/tuning/tuning_results.json`. The default model checkpoint is intentionally excluded from Git because it is large; keep a local copy or configure artifact storage before deployment.
+
+### Current exploratory run
+
+The five-trial run in this workspace selected trial 4 (learning rate `1e-5`, batch size 16, sequence length 256, dropout 0.1, weight decay 0.05, early stopped during a 3-epoch maximum). On the 598-turn custom test partition, DistilBERT reached PR-AUC 0.818, ROC-AUC 0.875, and F1 0.845 at a validation-selected threshold. TF-IDF on the same sampled training turns reached PR-AUC 0.853 and F1 0.846. At a 20% token budget, DistilBERT retained 47.4% of weakly labeled evidence turns. The model did not beat TF-IDF on PR-AUC; this result is preserved as measured.
+
+These are heuristic custom labels, not gold facts or user judgments. The scores validate that training, checkpoint selection, test evaluation, and retention measurement execute; they do not establish that the extractor understands arbitrary conversation meaning.
+
+## Setup
+
+Dependencies are listed in `requirements.txt`. In an existing virtual environment:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+No API keys are required. The app uses Python's built-in SQLite support.
+
+## Tests
+
+```powershell
+python -m pytest -q tests/test_local_memory.py tests/test_pipeline.py
+```
+
+Tests cover TXT/JSON/JSONL ingestion, extraction stance and provenance, duplicate handling, SQLite persistence, search, recovery from stored memory, deletion, budget constraints, and the existing offline evaluation pipeline.
+
+## Existing research assets and known data limits
+
+Processed datasets, split files, historical experiment outputs, and reports are retained in the repository. Raw datasets are not present under `data/raw/`, so the preprocessing pipeline cannot be rerun from raw source data in this workspace. The available custom set contains 3,574 turns and 147 conversations according to existing project documentation; labels are heuristic. The prepared LongMemEval subset has 25 haystacks and only 3 positives in validation. Historical reports disagree with checked-in result JSON and should be treated as unverified until regenerated.
+
+The simulated recovery evaluator now uses exact, namespaced aliases for supported evidence ID formats instead of substring matching. It remains an offline benchmark and is distinct from the SQLite-backed application recovery path.

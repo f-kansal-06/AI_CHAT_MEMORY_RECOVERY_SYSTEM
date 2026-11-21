@@ -39,11 +39,13 @@ def score_with_distilbert(
     tokenizer,
     batch_size: int = 32,
     device: Optional[torch.device] = None,
+    max_length: int = 128,
 ) -> np.ndarray:
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
     model.eval()
-    ds = TurnImportanceDataset(samples, tokenizer, max_length=128)
+    ds = TurnImportanceDataset(samples, tokenizer, max_length=max_length)
     loader = DataLoader(ds, batch_size=batch_size, shuffle=False)
     all_scores = []
     with torch.no_grad():

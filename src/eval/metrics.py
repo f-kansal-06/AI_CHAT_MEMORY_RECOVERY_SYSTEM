@@ -17,8 +17,11 @@ from sklearn.metrics import (
     precision_score,
     recall_score,
     f1_score,
+    accuracy_score,
+    confusion_matrix,
 )
 from src.data.schema import QuestionRecord
+from src.data.identifiers import turn_id_aliases
 
 
 def compute_expected_calibration_error(
@@ -76,10 +79,28 @@ def compute_turn_level_metrics(
     y_true: np.ndarray,
     y_prob: np.ndarray,
     threshold: float = 0.5,
-) -> Dict[str, float]:
-    """Compute turn-level classification and ranking metrics."""
+) -> Dict[str, Any]:
+    """
+    Compute turn-level classification and ranking metrics with conventional metrics included:
+    - Accuracy, Precision, Recall, F1-Score, Specificity, ROC-AUC, PR-AUC, Confusion Matrix
+    """
     if len(y_true) == 0:
-        return {"pr_auc": 0.0, "roc_auc": 0.0, "precision": 0.0, "recall": 0.0, "f1": 0.0, "ece": 0.0}
+        return {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "specificity": 0.0,
+            "roc_auc": 0.5,
+            "pr_auc": 0.0,
+            "true_positives": 0,
+            "false_positives": 0,
+            "true_negatives": 0,
+            "false_negatives": 0,
+            "confusion_matrix": [[0, 0], [0, 0]],
+            "ece": 0.0,
+            "threshold": threshold,
+        }
 
     # Handle single-class edge cases
     if len(np.unique(y_true)) < 2:
@@ -96,20 +117,95 @@ def compute_turn_level_metrics(
             roc_auc = 0.5
 
     y_pred = (y_prob >= threshold).astype(int)
+    acc = float(accuracy_score(y_true, y_pred))
     p = float(precision_score(y_true, y_pred, zero_division=0))
     r = float(recall_score(y_true, y_pred, zero_division=0))
     f1 = float(f1_score(y_true, y_pred, zero_division=0))
     ece = compute_expected_calibration_error(y_true, y_prob)
 
+    # Confusion matrix elements: TN, FP, FN, TP
+    cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
+    tn, fp, fn, tp = cm.ravel()
+    specificity = float(tn / (tn + fp)) if (tn + fp) > 0 else 0.0
+
     return {
-        "pr_auc": pr_auc,
-        "roc_auc": roc_auc,
+        "accuracy": acc,
         "precision": p,
         "recall": r,
         "f1": f1,
+        "specificity": specificity,
+        "roc_auc": roc_auc,
+        "pr_auc": pr_auc,
+        "true_positives": int(tp),
+        "false_positives": int(fp),
+        "true_negatives": int(tn),
+        "false_negatives": int(fn),
+        "confusion_matrix": [[int(tn), int(fp)], [int(fn), int(tp)]],
         "ece": ece,
         "threshold": threshold,
     }
+
+
+def compute_conventional_metrics(
+    y_true: np.ndarray,
+    y_prob: np.ndarray,
+    threshold: float = 0.5,
+) -> Dict[str, Any]:
+    """
+    Standard conventional classification metrics suite:
+    - Accuracy
+    - Precision
+    - Recall (Sensitivity)
+    - Specificity (True Negative Rate)
+    - F1-Score
+    - ROC-AUC
+    - PR-AUC
+    - Confusion Matrix (TP, FP, TN, FN)
+    """
+    return compute_turn_level_metrics(y_true, y_prob, threshold=threshold)
+
+
+def format_conventional_metrics_table(
+    metrics: Dict[str, Any],
+    title: str = "CONVENTIONAL EVALUATION METRICS SUMMARY"
+) -> str:
+    """Format evaluation metrics into a clean, human-readable terminal table."""
+    acc = metrics.get("accuracy", 0.0) * 100
+    p = metrics.get("precision", 0.0) * 100
+    r = metrics.get("recall", 0.0) * 100
+    spec = metrics.get("specificity", 0.0) * 100
+    f1 = metrics.get("f1", 0.0) * 100
+    roc = metrics.get("roc_auc", 0.0)
+    pr = metrics.get("pr_auc", 0.0)
+    thresh = metrics.get("threshold", 0.5)
+
+    tp = metrics.get("true_positives", 0)
+    fp = metrics.get("false_positives", 0)
+    tn = metrics.get("true_negatives", 0)
+    fn = metrics.get("false_negatives", 0)
+
+    lines = [
+        "=" * 65,
+        f"{title:^65}",
+        "=" * 65,
+        f"Classification Threshold : {thresh:.4f}",
+        "-" * 65,
+        f"Accuracy                 : {acc:6.2f}%",
+        f"Precision                : {p:6.2f}%",
+        f"Recall (Sensitivity)     : {r:6.2f}%",
+        f"Specificity (TNR)        : {spec:6.2f}%",
+        f"F1-Score                 : {f1:6.2f}%",
+        f"ROC-AUC Score            : {roc:6.4f}",
+        f"PR-AUC Score             : {pr:6.4f}",
+        "-" * 65,
+        "Confusion Matrix:",
+        f"  True Positives  (TP)   : {tp:6d}",
+        f"  False Positives (FP)   : {fp:6d}",
+        f"  True Negatives  (TN)   : {tn:6d}",
+        f"  False Negatives (FN)   : {fn:6d}",
+        "=" * 65,
+    ]
+    return "\n".join(lines)
 
 
 def compute_dcg(relevance: np.ndarray, k: int) -> float:
@@ -267,10 +363,7 @@ def compute_budgeted_retention(
                 t_tokens = t.get("n_tokens", 1)
                 if current_tokens + t_tokens <= budget_limit:
                     current_tokens += t_tokens
-                    t_id = f"{t.get('conv_id')}_{t.get('session_id')}_{t.get('turn_idx')}"
-                    retained_turn_ids.add(t_id)
-                    # Also record by global turn idx or tuple
-                    retained_turn_ids.add(f"{cid}_{t.get('global_turn_idx')}")
+                    retained_turn_ids.update(turn_id_aliases(t, str(cid)))
 
             total_retained_tokens_all += current_tokens
 
@@ -278,9 +371,7 @@ def compute_budgeted_retention(
             for t, _ in items:
                 if t.get("label", 0) == 1:
                     total_evidence_turns += 1
-                    t_id = f"{t.get('conv_id')}_{t.get('session_id')}_{t.get('turn_idx')}"
-                    t_gid = f"{cid}_{t.get('global_turn_idx')}"
-                    if t_id in retained_turn_ids or t_gid in retained_turn_ids:
+                    if turn_id_aliases(t, str(cid)) & retained_turn_ids:
                         retained_evidence_turns += 1
 
             # Check questions in this conversation
@@ -294,11 +385,8 @@ def compute_budgeted_retention(
                 for ev_id in q.evidence_turn_ids:
                     # Match against retained IDs
                     if ev_id not in retained_turn_ids:
-                        # Try suffix match or alternative index format
-                        matched = any(ev_id in ret or ret in ev_id for ret in retained_turn_ids)
-                        if not matched:
-                            all_kept = False
-                            break
+                        all_kept = False
+                        break
                 if all_kept:
                     fully_retained_questions += 1
 

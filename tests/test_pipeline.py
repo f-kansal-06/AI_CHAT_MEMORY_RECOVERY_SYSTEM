@@ -81,6 +81,12 @@ def test_no_leakage_in_splits():
         assert len(tr_cids.intersection(te_cids)) == 0
         assert len(va_cids.intersection(te_cids)) == 0
 
+        # Duplicate session content must not cross split boundaries either.
+        from src.data.split import _split_session_hashes
+        assert not (_split_session_hashes(tr) & _split_session_hashes(va))
+        assert not (_split_session_hashes(tr) & _split_session_hashes(te))
+        assert not (_split_session_hashes(va) & _split_session_hashes(te))
+
 
 def test_custom_text_absent_from_test_sets():
     """Verify custom dataset normalized text does not appear in test sets."""

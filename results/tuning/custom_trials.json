@@ -1,0 +1,112 @@
+[
+  {
+    "trial": 1,
+    "config": {
+      "model_name_or_path": "distilbert-base-uncased",
+      "context_window": 1,
+      "max_length": 256,
+      "batch_size": 16,
+      "epochs": 5,
+      "lr": 1e-05,
+      "weight_decay": 0.05,
+      "dropout": 0.1,
+      "warmup_ratio": 0.1,
+      "grad_clip": 1.0,
+      "patience": 2,
+      "aux_weight": 0.0,
+      "max_train_turns": 2000,
+      "max_val_turns": 1500
+    },
+    "best_val_pr_auc": 0.7657927427280268,
+    "best_threshold": 0.9392980337142944,
+    "checkpoint_path": "results/tuning/custom/trial_01/best_model.pt"
+  },
+  {
+    "trial": 2,
+    "config": {
+      "model_name_or_path": "distilbert-base-uncased",
+      "context_window": 1,
+      "max_length": 128,
+      "batch_size": 16,
+      "epochs": 5,
+      "lr": 1e-05,
+      "weight_decay": 0.01,
+      "dropout": 0.2,
+      "warmup_ratio": 0.1,
+      "grad_clip": 1.0,
+      "patience": 2,
+      "aux_weight": 0.0,
+      "max_train_turns": 2000,
+      "max_val_turns": 1500
+    },
+    "best_val_pr_auc": 0.7772370708609944,
+    "best_threshold": 0.9405930042266846,
+    "checkpoint_path": "results/tuning/custom/trial_02/best_model.pt"
+  },
+  {
+    "trial": 3,
+    "config": {
+      "model_name_or_path": "distilbert-base-uncased",
+      "context_window": 1,
+      "max_length": 256,
+      "batch_size": 8,
+      "epochs": 5,
+      "lr": 1e-05,
+      "weight_decay": 0.05,
+      "dropout": 0.1,
+      "warmup_ratio": 0.1,
+      "grad_clip": 1.0,
+      "patience": 2,
+      "aux_weight": 0.0,
+      "max_train_turns": 2000,
+      "max_val_turns": 1500
+    },
+    "best_val_pr_auc": 0.7583472486056015,
+    "best_threshold": 0.9856895208358765,
+    "checkpoint_path": "results/tuning/custom/trial_03/best_model.pt"
+  },
+  {
+    "trial": 4,
+    "config": {
+      "model_name_or_path": "distilbert-base-uncased",
+      "context_window": 1,
+      "max_length": 256,
+      "batch_size": 16,
+      "epochs": 3,
+      "lr": 1e-05,
+      "weight_decay": 0.05,
+      "dropout": 0.1,
+      "warmup_ratio": 0.1,
+      "grad_clip": 1.0,
+      "patience": 2,
+      "aux_weight": 0.0,
+      "max_train_turns": 2000,
+      "max_val_turns": 1500
+    },
+    "best_val_pr_auc": 0.7783885521550047,
+    "best_threshold": 0.9420362114906311,
+    "checkpoint_path": "results/tuning/custom/trial_04/best_model.pt"
+  },
+  {
+    "trial": 5,
+    "config": {
+      "model_name_or_path": "distilbert-base-uncased",
+      "context_window": 1,
+      "max_length": 256,
+      "batch_size": 8,
+      "epochs": 5,
+      "lr": 2e-05,
+      "weight_decay": 0.01,
+      "dropout": 0.2,
+      "warmup_ratio": 0.1,
+      "grad_clip": 1.0,
+      "patience": 2,
+      "aux_weight": 0.0,
+      "max_train_turns": 2000,
+      "max_val_turns": 1500
+    },
+    "best_val_pr_auc": 0.7441368195913443,
+    "best_threshold": 0.9963387250900269,
+    "checkpoint_path": "results/tuning/custom/trial_05/best_model.pt"
+  }
+]

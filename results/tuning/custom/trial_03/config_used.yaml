@@ -1,0 +1,14 @@
+aux_weight: 0.0
+batch_size: 8
+context_window: 1
+dropout: 0.1
+epochs: 5
+grad_clip: 1.0
+lr: 1.0e-05
+max_length: 256
+max_train_turns: 2000
+max_val_turns: 1500
+model_name_or_path: distilbert-base-uncased
+patience: 2
+warmup_ratio: 0.1
+weight_decay: 0.05

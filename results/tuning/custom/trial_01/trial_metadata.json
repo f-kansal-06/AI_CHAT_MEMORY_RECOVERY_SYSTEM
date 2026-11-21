@@ -1,0 +1,20 @@
+{
+  "data_fingerprint": "5a7e79435590dbffc3a7b5257bac72e4be382de4c11c56d2e98150cc89f78305",
+  "config": {
+    "model_name_or_path": "distilbert-base-uncased",
+    "context_window": 1,
+    "max_length": 256,
+    "batch_size": 16,
+    "epochs": 5,
+    "lr": 1e-05,
+    "weight_decay": 0.05,
+    "dropout": 0.1,
+    "warmup_ratio": 0.1,
+    "grad_clip": 1.0,
+    "patience": 2,
+    "aux_weight": 0.0,
+    "max_train_turns": 2000,
+    "max_val_turns": 1500
+  },
+  "seed": 42
+}

@@ -7,6 +7,7 @@ when a conversation is cut off at 25%, 50%, and 75% of its length.
 from typing import List, Dict, Any, Tuple, Optional, Callable
 import numpy as np
 from src.data.schema import QuestionRecord
+from src.data.identifiers import turn_id_aliases
 
 
 def run_recovery_simulation(
@@ -95,9 +96,7 @@ def run_recovery_simulation(
                     tok = t.get("n_tokens", 1)
                     if current_budget + tok <= budget_limit:
                         current_budget += tok
-                        t_id = f"{t.get('conv_id')}_{t.get('session_id')}_{t.get('turn_idx')}"
-                        restored_turn_ids.add(t_id)
-                        restored_turn_ids.add(f"{cid}_{t.get('global_turn_idx')}")
+                        restored_turn_ids.update(turn_id_aliases(t, cid))
 
                 total_restored_tokens += current_budget
 
@@ -105,19 +104,11 @@ def run_recovery_simulation(
                 for t in pre_cut_turns:
                     if t.get("label", 0) == 1:
                         total_pre_cut_evidence += 1
-                        t_id = f"{t.get('conv_id')}_{t.get('session_id')}_{t.get('turn_idx')}"
-                        t_gid = f"{cid}_{t.get('global_turn_idx')}"
-                        if t_id in restored_turn_ids or t_gid in restored_turn_ids:
+                        if turn_id_aliases(t, cid) & restored_turn_ids:
                             retained_pre_cut_evidence += 1
 
                 # Check eligible questions: ALL evidence turns must lie strictly before cut_idx
-                pre_cut_turn_ids_all = set(
-                    f"{t.get('conv_id')}_{t.get('session_id')}_{t.get('turn_idx')}"
-                    for t in pre_cut_turns
-                )
-                pre_cut_gids_all = set(
-                    f"{cid}_{t.get('global_turn_idx')}" for t in pre_cut_turns
-                )
+                pre_cut_turn_ids_all = set().union(*(turn_id_aliases(t, cid) for t in pre_cut_turns)) if pre_cut_turns else set()
 
                 for q in conv_questions_map.get(cid, []):
                     if not q.evidence_turn_ids:
@@ -126,7 +117,7 @@ def run_recovery_simulation(
                     # Verify that ALL evidence turns are before the cut
                     all_evidence_before_cut = True
                     for ev_id in q.evidence_turn_ids:
-                        in_pre_cut = (ev_id in pre_cut_turn_ids_all) or (ev_id in pre_cut_gids_all) or any(ev_id in x or x in ev_id for x in pre_cut_turn_ids_all)
+                        in_pre_cut = ev_id in pre_cut_turn_ids_all
                         if not in_pre_cut:
                             all_evidence_before_cut = False
                             break
@@ -139,7 +130,7 @@ def run_recovery_simulation(
                     # Check if all evidence is inside restored memory
                     all_evidence_restored = True
                     for ev_id in q.evidence_turn_ids:
-                        in_restored = (ev_id in restored_turn_ids) or any(ev_id in x or x in ev_id for x in restored_turn_ids)
+                        in_restored = ev_id in restored_turn_ids
                         if not in_restored:
                             all_evidence_restored = False
                             break

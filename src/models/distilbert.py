@@ -25,36 +25,36 @@ class DistilBertForMemoryImportance(nn.Module):
         dropout_rate: float = 0.2,
         pos_weight: Optional[float] = None,
         aux_weight: float = 0.0,
+        allow_random_init: bool = False,
+        local_files_only: bool = True,
     ):
         super().__init__()
         self.num_categories = num_categories
         self.aux_weight = aux_weight
 
         try:
-            self.distilbert = DistilBertModel.from_pretrained(model_name_or_path, local_files_only=True)
+            self.distilbert = DistilBertModel.from_pretrained(model_name_or_path, local_files_only=local_files_only)
             hidden_size = self.distilbert.config.dim
-        except Exception:
-            try:
-                self.distilbert = DistilBertModel.from_pretrained(model_name_or_path)
-                hidden_size = self.distilbert.config.dim
-            except Exception as e:
-                logger.warning(
-                    f"Could not load pretrained weights for '{model_name_or_path}' ({e}). "
-                    "Initializing randomly initialized DistilBertConfig."
-                )
-                config = DistilBertConfig(
-                    vocab_size=30522,
-                    max_position_embeddings=512,
-                    sinusoidal_pos_embds=False,
-                    n_layers=4,
-                    n_heads=8,
-                    dim=256,
-                    hidden_dim=1024,
-                    dropout=0.1,
-                    attention_dropout=0.1,
-                )
-                self.distilbert = DistilBertModel(config)
-                hidden_size = 256
+        except Exception as exc:
+            if not allow_random_init:
+                raise RuntimeError(
+                    f"Could not load pretrained weights for '{model_name_or_path}'. "
+                    "Training with random encoder weights is disabled. Make the model available locally or explicitly set allow_random_init=True for a non-production experiment."
+                ) from exc
+            logger.warning("Explicit random initialization enabled for %s", model_name_or_path)
+            config = DistilBertConfig(
+                vocab_size=30522,
+                max_position_embeddings=512,
+                sinusoidal_pos_embds=False,
+                n_layers=4,
+                n_heads=8,
+                dim=256,
+                hidden_dim=1024,
+                dropout=0.1,
+                attention_dropout=0.1,
+            )
+            self.distilbert = DistilBertModel(config)
+            hidden_size = 256
 
         self.pre_classifier = nn.Linear(hidden_size, hidden_size)
         self.dropout = nn.Dropout(dropout_rate)

@@ -95,15 +95,11 @@ class TurnImportanceDataset(Dataset):
         }
 
 
-def get_tokenizer(model_name: str = "distilbert-base-uncased"):
+def get_tokenizer(model_name: str = "distilbert-base-uncased", local_files_only: bool = True):
     try:
-        return AutoTokenizer.from_pretrained(model_name, local_files_only=True)
-    except Exception as e:
-        try:
-            return AutoTokenizer.from_pretrained(model_name)
-        except Exception:
-            logger.warning(f"Could not load AutoTokenizer from '{model_name}' ({e}). Using robust fallback.")
-            return None
+        return AutoTokenizer.from_pretrained(model_name, local_files_only=local_files_only)
+    except Exception as exc:
+        raise RuntimeError(f"Could not load tokenizer '{model_name}'. Training and inference require the matching pretrained tokenizer.") from exc
 
 
 def train_epoch(
@@ -224,23 +220,16 @@ def run_training(
     context_window = config.get("context_window", 1)
     max_train_turns = config.get("max_train_turns")
     if max_train_turns and len(train_turns) > max_train_turns:
-        pos_turns = [t for t in train_turns if t.get("label", 0) == 1]
-        neg_turns = [t for t in train_turns if t.get("label", 0) == 0]
-        # Allow up to half of max_train_turns for positives so negatives are always included
-        max_pos_allowed = max(1, int(max_train_turns * 0.5))
-        n_pos = min(len(pos_turns), max_pos_allowed)
-        n_neg = min(len(neg_turns), max_train_turns - n_pos)
-        train_turns = pos_turns[:n_pos] + neg_turns[:n_neg]
-        logger.info(f"Subsetting train turns: preserved {n_pos} positives + {n_neg} negatives.")
+        sample_rng = np.random.RandomState(seed)
+        selected = set(sample_rng.choice(len(train_turns), size=max_train_turns, replace=False).tolist())
+        train_turns = [turn for i, turn in enumerate(train_turns) if i in selected]
+        logger.info("Subsampled %s training turns without changing class prevalence by design.", len(train_turns))
 
     max_val_turns = config.get("max_val_turns", 500)
     if max_val_turns and len(val_turns) > max_val_turns:
-        val_pos = [t for t in val_turns if t.get("label", 0) == 1]
-        val_neg = [t for t in val_turns if t.get("label", 0) == 0]
-        max_val_pos_allowed = max(1, int(max_val_turns * 0.5))
-        n_v_pos = min(len(val_pos), max_val_pos_allowed)
-        n_v_neg = min(len(val_neg), max_val_turns - n_v_pos)
-        val_turns = val_pos[:n_v_pos] + val_neg[:n_v_neg]
+        val_rng = np.random.RandomState(seed + 1)
+        selected = set(val_rng.choice(len(val_turns), size=max_val_turns, replace=False).tolist())
+        val_turns = [turn for i, turn in enumerate(val_turns) if i in selected]
 
     # Format turns into model inputs
     train_samples = build_formatted_samples(train_turns, context_window=context_window)
@@ -258,7 +247,8 @@ def run_training(
 
     # Model & Tokenizer
     model_name = config.get("model_name_or_path", "distilbert-base-uncased")
-    tokenizer = get_tokenizer(model_name)
+    local_files_only = bool(config.get("local_files_only", True))
+    tokenizer = get_tokenizer(model_name, local_files_only=local_files_only)
     max_length = config.get("max_length", 256)
 
     train_ds = TurnImportanceDataset(train_samples, tokenizer, max_length=max_length)
@@ -272,8 +262,10 @@ def run_training(
     model = DistilBertForMemoryImportance(
         model_name_or_path=model_name,
         num_categories=len(CATEGORY_MAP),
+        dropout_rate=float(config.get("dropout", 0.2)),
         pos_weight=pos_weight,
         aux_weight=aux_weight,
+        local_files_only=local_files_only,
     ).to(device)
 
     epochs = config.get("epochs", 5)
@@ -355,5 +347,7 @@ def run_training(
         "best_val_pr_auc": best_val_pr_auc,
         "best_threshold": best_threshold,
         "checkpoint_path": str(best_checkpoint_path),
+        "device": str(device),
+        "pretrained_model": model_name,
         "history": history,
     }

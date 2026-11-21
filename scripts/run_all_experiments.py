@@ -23,6 +23,7 @@ import torch
 
 from src.data.dataset import load_turns_from_jsonl, build_formatted_samples
 from src.data.schema import QuestionRecord
+from src.data.identifiers import questions_grounded_in_turns
 from src.baselines.heuristics import RandomBaseline, RecencyBaseline, LengthBaseline
 from src.baselines.tfidf_lr import TfidfLogisticRegression
 from src.baselines.minilm_lr import MiniLMLogisticRegression
@@ -54,6 +55,8 @@ def load_dataset_splits(dataset_name: str):
             for l in f:
                 if l.strip():
                     questions.append(QuestionRecord.from_dict(json.loads(l)))
+
+    questions = questions_grounded_in_turns(questions, test_turns)
 
     return train_turns, val_turns, test_turns, questions
 
@@ -213,7 +216,7 @@ def run_e1b_locomo(output_dir: str = "results/e1b_locomo", epochs: int = 1) -> D
         tr = [t for t in loc_turns if t["conv_id"] in f_info["train_conv_ids"]]
         va = [t for t in loc_turns if t["conv_id"] in f_info["val_conv_ids"]]
         te = [t for t in loc_turns if t["conv_id"] in f_info["test_conv_ids"]]
-        fold_qs = [q for q in all_qs if q.conv_id in f_info["test_conv_ids"]]
+        fold_qs = questions_grounded_in_turns([q for q in all_qs if q.conv_id in f_info["test_conv_ids"]], te)
 
         fold_out = f"{output_dir}/fold_{f_idx}"
         config = {
