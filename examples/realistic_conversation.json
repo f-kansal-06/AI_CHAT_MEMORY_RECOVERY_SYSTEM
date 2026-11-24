@@ -1,13 +1,20 @@
 {
-  "title": "Research project planning",
+  "title": "Local memory system lab demo",
   "messages": [
-    {"role": "user", "content": "We are building a local conversation memory and recovery system. It must run without external chatbot APIs."},
-    {"role": "assistant", "content": "One option is to send every conversation to a hosted LLM for summarization."},
-    {"role": "user", "content": "Do not use hosted APIs. Keep all conversation data local, and use SQLite for persistent storage."},
-    {"role": "assistant", "content": "Understood. We will use SQLite and local processing."},
-    {"role": "user", "content": "Please preserve disagreements and uncertain claims separately from confirmed decisions. Source references are required."},
-    {"role": "assistant", "content": "The original research pipeline has turn-level importance classifiers, but those models do not extract structured facts by themselves."},
-    {"role": "user", "content": "Agreed. Keep importance ranking separate from fact extraction. Next, validate recovery using the stored memory only."},
-    {"role": "assistant", "content": "We still need to decide which optional local language model, if any, improves extraction quality."}
+    {"id": "D-01", "role": "user", "content": "We are building a local conversation memory and recovery system for a lab demonstration."},
+    {"id": "D-02", "role": "user", "content": "Store conversation data in SQLite and do not send it to hosted APIs."},
+    {"id": "D-03", "role": "assistant", "content": "One option is to send each conversation to a hosted LLM for summarization."},
+    {"id": "D-04", "role": "user", "content": "I disagree with sending conversations to a hosted LLM. I reject that suggestion. All conversation processing must stay local."},
+    {"id": "D-05", "role": "assistant", "content": "We will use SQLite for persistent storage and local rule-based extraction for the lab demo."},
+    {"id": "D-06", "role": "user", "content": "Every saved memory must keep a reference to its source message."},
+    {"id": "D-07", "role": "user", "content": "Requirement: Keep explicit disagreements and unresolved questions separate from confirmed decisions."},
+    {"id": "D-08", "role": "user", "content": "We still need to decide whether an optional local importance model improves memory quality."},
+    {"id": "D-09", "role": "user", "content": "Next, validate recovery using the stored memories without rereading the transcript."},
+    {"id": "D-10", "role": "assistant", "content": "Hello again."},
+    {"id": "D-11", "role": "user", "content": "Store conversation data in SQLite and do not send it to hosted APIs."},
+    {"id": "D-12", "role": "assistant", "content": "Okay, noted."},
+    {"id": "D-13", "role": "user", "content": "Store conversation data in SQLite and do not send it to hosted APIs."},
+    {"id": "D-14", "role": "user", "content": "Every saved memory must keep a reference to its source message."},
+    {"id": "D-15", "role": "assistant", "content": "Thanks."}
   ]
 }

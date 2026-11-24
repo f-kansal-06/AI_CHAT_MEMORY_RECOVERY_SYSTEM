@@ -4,7 +4,7 @@ This repository now includes a terminal application that imports conversation ex
 
 The original research pipeline remains under `src/data`, `src/models`, `src/baselines`, `src/eval`, and `scripts`. Its DistilBERT classifier predicts turn importance; it does not extract facts or establish whether a claim is true. The product layer keeps extraction and importance ranking separate.
 
-## Run the local application
+## Run the lab demonstration
 
 Use the project virtual environment on Windows:
 
@@ -13,13 +13,19 @@ Use the project virtual environment on Windows:
 python chat_memory.py
 ```
 
-Or run one import without opening the menu:
+Choose **1. Run guided demo**. It uses a prepared conversation, extracts candidate memories with local rules, displays each candidate beside its source message, lets you keep/exclude/correct it, saves the reviewed recovery document, and opens that document in Notepad. The database is local at `data/chat_memory.sqlite3`; the recovery document is written to `output/recovery_context.md`.
+
+You can also launch the guided demo directly:
 
 ```powershell
-python chat_memory.py --import-file examples/realistic_conversation.json
+python scripts/demo_memory.py
 ```
 
-The menu supports file or manual import, analysis, browsing, recovery, search, size comparison, saved model evaluation, deletion, and exit. For manual input, choose **Import conversation file** and enter `manual`; use `User:` and `Assistant:` prefixes and finish with `/done`.
+The terminal menu also supports importing your own conversation, analyzing it, reviewing/correcting memories, creating a recovery document, searching, and a small set of research tools. For manual input, choose **Import a conversation** and enter `manual`; use `User:` and `Assistant:` prefixes and finish with `/done`.
+
+In the review step, press Enter to keep an item, `e` to exclude it from recovery, `c` to correct its text while retaining its source reference, `r` to restore an excluded item, or `q` to finish reviewing. The recovery file is regenerated from included saved memories only. Reanalyzing a conversation creates a fresh set of extracted memories and resets those review choices.
+
+By default, the app uses the transparent local rule extractor and does not load the optional DistilBERT checkpoint. To opt into its turn-importance scores, start the app with `--use-importance-model` and choose **Analyze a conversation**. That model ranks message importance; it does not extract facts or determine whether they are true.
 
 Supported formats:
 
@@ -37,17 +43,11 @@ Try the demo in the CLI:
 3. Review the stored memory, then recover it. The recovery renderer reads the memory table and source IDs; it does not reread transcript messages.
 4. Search for `SQLite` and compare original versus retained token counts.
 
-For a one-command end-to-end walkthrough (using a temporary database and the saved local classifier when available):
-
-```powershell
-python scripts/demo_memory.py
-```
-
 ## Memory extraction and boundaries
 
 The required extractor is deterministic local rule-based NLP, with no generative model and no remote calls. It stores short fact, preference, requirement, decision, agreement, suggestion, rejected suggestion, uncertainty, unresolved question, disputed claim, conclusion, and next-action entries. Each entry records source message IDs, status, confidence, and importance. Exact duplicate entries link to all their source messages. Likely polarity conflicts receive a shared review group.
 
-This approach is an initial, inspectable baseline. It does not perform general semantic entailment, reliably resolve pronouns, or guarantee that an arbitrary disagreement is detected. A suggestion is not automatically an agreed fact. Review disputed and low-confidence items before relying on a recovery brief.
+This approach is an initial, inspectable baseline. It does not perform general semantic entailment, reliably resolve pronouns, or detect implicit disagreements. It marks disagreement when the message uses an explicit disagreement cue. A suggestion is not automatically an agreed fact. Review extracted items against their sources before relying on a recovery brief.
 
 The saved importance model is optional. When `results/tuning/tuning_results.json` and its checkpoint are available, analysis combines the model's turn-salience score with the extractor's structural score. Otherwise, analysis reports and uses rule-based importance alone. The model score cannot convert a suggestion or uncertain statement into a confirmed fact.
 

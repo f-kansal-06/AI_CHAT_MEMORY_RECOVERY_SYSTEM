@@ -86,6 +86,8 @@ class MemoryStore:
             memory_columns = {row[1] for row in db.execute("PRAGMA table_info(memories)")}
             if "model_importance" not in memory_columns:
                 db.execute("ALTER TABLE memories ADD COLUMN model_importance REAL")
+            if "excluded" not in memory_columns:
+                db.execute("ALTER TABLE memories ADD COLUMN excluded INTEGER NOT NULL DEFAULT 0")
 
     @staticmethod
     def _now() -> str:
@@ -164,6 +166,31 @@ class MemoryStore:
             row["source_message_ids"] = json.loads(row["source_message_ids"])
         return result
 
+    def set_memory_excluded(self, memory_id: str, excluded: bool) -> bool:
+        """Include or exclude one memory from future recovery documents."""
+        with self._connect() as db:
+            cur = db.execute(
+                "UPDATE memories SET excluded=? WHERE memory_id=?",
+                (int(excluded), memory_id),
+            )
+        return cur.rowcount > 0
+
+    def update_memory_text(self, memory_id: str, text: str) -> bool:
+        """Correct an extracted memory while preserving its provenance."""
+        text = " ".join(text.split())
+        if not text:
+            raise ValueError("Memory text cannot be empty")
+        normalized = text.lower()
+        try:
+            with self._connect() as db:
+                cur = db.execute(
+                    "UPDATE memories SET text=?, normalized_text=? WHERE memory_id=?",
+                    (text, normalized, memory_id),
+                )
+        except sqlite3.IntegrityError as exc:
+            raise ValueError("That correction duplicates another memory entry") from exc
+        return cur.rowcount > 0
+
     def search(self, query: str, limit: int = 20) -> list[dict[str, Any]]:
         terms = [term for term in query.split() if term]
         if not terms:
@@ -174,7 +201,7 @@ class MemoryStore:
             params.extend((f"%{term}%", f"%{term}%"))
         params.append(limit)
         with self._connect() as db:
-            rows = db.execute(f"SELECT m.*, c.title FROM memories m JOIN conversations c USING(conversation_id) WHERE {where} ORDER BY m.importance DESC LIMIT ?", params).fetchall()
+            rows = db.execute(f"SELECT m.*, c.title FROM memories m JOIN conversations c USING(conversation_id) WHERE m.excluded=0 AND {where} ORDER BY m.importance DESC LIMIT ?", params).fetchall()
         result = [dict(row) for row in rows]
         for row in result:
             row["source_message_ids"] = json.loads(row["source_message_ids"])

@@ -7,6 +7,8 @@ from typing import Any
 
 
 def render_recovery(title: str, memories: list[dict[str, Any]]) -> str:
+    excluded_count = sum(bool(row.get("excluded", 0)) for row in memories)
+    memories = [row for row in memories if not row.get("excluded", 0)]
     groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in memories:
         groups[row["kind"]].append(row)
@@ -17,7 +19,7 @@ def render_recovery(title: str, memories: list[dict[str, Any]]) -> str:
         "suggestion": "Suggestions (not confirmed)", "uncertainty": "Uncertainties", "unresolved_question": "Unresolved questions", "next_action": "Next actions",
     }
     ordered = ["fact", "decision", "conclusion", "requirement", "preference", "agreement", "claim", "rejected_suggestion", "suggestion", "uncertainty", "unresolved_question", "next_action"]
-    lines = [f"# Conversation recovery: {title}", "", "## Overview", f"Stored {len(memories)} memory items. This recovery uses the saved memory and source references; it does not reread the original transcript."]
+    lines = [f"# Conversation recovery: {title}", "", "## Overview", f"Included {len(memories)} memory items; excluded {excluded_count}. This recovery uses the saved memory and source references; it does not reread the original transcript."]
     for kind in ordered:
         rows = groups.get(kind, [])
         if not rows:
