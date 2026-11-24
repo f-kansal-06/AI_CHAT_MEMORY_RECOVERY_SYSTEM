@@ -30,6 +30,10 @@ wheels/
 htmlcov/
 .tox/
 
+# Local demo data and generated summaries
+data/*.sqlite3
+output/
+
 # Large Model Checkpoints (> 100 MB, violates GitHub limits)
 *.pt
 *.pth

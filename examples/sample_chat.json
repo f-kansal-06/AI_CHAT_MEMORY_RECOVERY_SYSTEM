@@ -1,0 +1,16 @@
+{
+  "title": "Planning a weekend trip to Jaipur",
+  "messages": [
+    {"role": "user", "content": "I want to plan a two-day trip to Jaipur next month with my sister."},
+    {"role": "user", "content": "Our total budget is ₹12,000 for both of us."},
+    {"role": "assistant", "content": "One option is taking a Friday evening train and staying near Hawa Mahal."},
+    {"role": "user", "content": "Let's go with the Friday evening train and a budget hotel near Hawa Mahal."},
+    {"role": "user", "content": "Please keep the schedule relaxed and include Amber Fort and Hawa Mahal."},
+    {"role": "assistant", "content": "We could also add Nahargarh Fort on Saturday afternoon."},
+    {"role": "user", "content": "I reject adding another fort. Leave Saturday afternoon free."},
+    {"role": "user", "content": "Our total budget is ₹12,000 for both of us."},
+    {"role": "assistant", "content": "You could book train tickets early because fares may change."},
+    {"role": "user", "content": "We still need to decide which hotel to book."},
+    {"role": "user", "content": "Next, compare train fares and confirm the hotel."}
+  ]
+}

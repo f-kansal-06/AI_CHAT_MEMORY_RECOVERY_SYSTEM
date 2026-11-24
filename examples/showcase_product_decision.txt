@@ -1,0 +1,85 @@
+You said:
+Our small team is planning a community book exchange. People should be able to list books they can lend and request books from others.
+We have no budget for hosting, and volunteers will manage the exchange during its first month.
+We have four volunteers and expect around thirty participants. We do not yet know how many books will be listed.
+We want to test whether people use the process before spending time building software.
+
+ChatGPT said:
+A shared spreadsheet is the quickest way to start, while a small web app could make searching and requests easier later.
+Before building software, you could test the process with a spreadsheet and a simple request form for one month.
+Agree on who can edit the inventory and how volunteers will handle requests that cannot be matched.
+
+You said:
+I agree that we should test the process before building an app. We will use a shared spreadsheet and request form for the first month.
+We need to track book title, owner, availability, and who has requested it.
+The spreadsheet must be usable on a phone because volunteers may update it while they are away from a computer.
+
+ChatGPT said:
+You could add ratings, user profiles, automatic reminders, delivery tracking, and a recommendation system.
+Those features may be useful if the exchange grows, but they add work before you know what volunteers need.
+For the trial, a short request form and one inventory sheet may be enough.
+
+You said:
+I reject ratings and recommendations for the trial. We do not need user profiles or automatic reminders yet.
+Please keep the process easy for volunteers to update from a phone.
+One volunteer should be responsible for editing the main inventory so there are not conflicting copies.
+
+ChatGPT said:
+Use a request form for participants and give edit access to the volunteer responsible for inventory. Other volunteers can view the sheet and report corrections.
+Consider including book title, author, owner contact method, availability, request date, and request status.
+Avoid collecting more participant information than the volunteers need to coordinate a loan.
+
+You said:
+We decided to record title, author, owner contact, availability, request date, and request status.
+We will not store home addresses. Participants can provide an email address or agree to meet at the community center.
+We still need to decide whether contact details should be visible to all volunteers or only the coordinator.
+
+ChatGPT said:
+Limiting contact details to the coordinator reduces unnecessary access. You could keep contact details in a separate restricted sheet and use a request ID in the shared inventory.
+The team should tell participants how their contact information will be used and when it will be removed.
+For safety, arrange exchanges in a public place such as the community center.
+
+You said:
+We agree that the coordinator should be the only person who can see contact details. The shared inventory will use request IDs.
+The community center is our default exchange location. We will tell participants that contact details are used only to arrange the book exchange and deleted after the trial.
+We have not decided how long a book can be borrowed.
+
+ChatGPT said:
+A two-week loan period is a simple starting point, but check whether the volunteers can track due dates before promising reminders.
+You could begin with a two-week guideline and ask the owner and borrower to agree on the return date when the book is handed over.
+Do not assume that an automated reminder exists if the trial is managed manually.
+
+You said:
+We will suggest two weeks, but the owner and borrower can agree on a different return date. That is our current rule.
+I do not want the spreadsheet to imply that a book is available when a request is pending.
+Could we use statuses: available, requested, borrowed, and returned?
+
+ChatGPT said:
+Those statuses make the process visible. Define when each change happens: a participant submits a request, the coordinator confirms a match, the book is handed over, and the book is returned.
+You could add a cancelled status if someone withdraws a request, but keep the main workflow small.
+Review unmatched requests once a week and contact participants through the coordinator.
+
+You said:
+We accepted the four statuses and will add cancelled only if a real request needs it during the trial.
+The owner will confirm whether a request can be matched. The coordinator will update the status when the book is handed over and returned.
+We have decided that a volunteer will review unmatched requests every Friday.
+
+ChatGPT said:
+That gives you a clear responsibility for each update. Before launch, test the form and sheet using fictional requests from submission through return.
+At the end of each week, count listings, requests, successful matches, and unmatched requests. Ask volunteers how long updates took and what caused confusion.
+Use those observations to decide whether a simple application would solve a real problem.
+
+You said:
+We tested the workflow with five fictional requests. One request was missing an author, and two volunteers were unsure who should change a book from requested to borrowed.
+We will make author optional and add a note that only the coordinator changes the status after handover.
+The return-date guideline is still open for feedback from the volunteers.
+
+ChatGPT said:
+Those are useful findings from the trial run. Make the required fields clear and put the status rule beside the sheet instructions so volunteers see it while updating records.
+After the first month, compare participant interest and volunteer workload with your original expectations.
+If the spreadsheet remains manageable, you may not need to build software yet.
+
+You said:
+We have updated the instructions and scheduled the trial to start next month.
+We will review usage and volunteer feedback after four weeks before deciding whether to build an app.
+The open questions are the final loan-period guideline and whether the spreadsheet is easy enough to maintain at the expected size.

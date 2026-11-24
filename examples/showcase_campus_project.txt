@@ -1,0 +1,83 @@
+You said:
+I need a manageable capstone idea for a four-person computer science group. We have about eight weeks, know Python and basic SQL, and want something we can explain clearly in a lab demonstration.
+We have access to a small department storeroom, but we should not use real student records in our demo.
+I am especially worried about choosing something that sounds impressive but becomes too large to finish.
+
+ChatGPT said:
+A campus equipment lending tracker could fit that scope. It could record equipment, borrowers, due dates, and return status, then show what is overdue.
+Start with one department and fictional records. The first version can be a command-line Python application backed by SQLite, so the whole group can run it without a server.
+Avoid promising automation or campus-wide deployment unless you can demonstrate it.
+
+You said:
+That sounds practical. I want to use the equipment lending tracker.
+We have decided to build it as a command-line Python application with SQLite because everyone in the group can run it locally.
+Our first demo should add an item, lend it, return it, and show overdue items.
+
+ChatGPT said:
+That is a clear end-to-end demonstration. A basic item record could include an item ID, name, category, and availability.
+A loan record could include the item ID, borrower reference, checkout date, due date, and return date.
+You could add user accounts, email reminders, QR codes, a mobile app, and analytics later, but those features are outside the first version.
+
+You said:
+Please keep the first version local and simple. Do not add email, QR codes, or a mobile app.
+Each group member should be able to explain one part of the system during the demonstration.
+We are thinking about four areas: database, menu, lending rules, and sample data/documentation.
+
+ChatGPT said:
+That division gives each person a visible responsibility. Agree on the table fields and function names before splitting the implementation, so the pieces fit together.
+One possible sequence is: create the schema, add and list items, check out an available item, accept a return, then report overdue loans.
+Use a fixed demo date or clearly labeled sample dates so the overdue report is predictable.
+
+You said:
+We agree on the command-line version and the four core actions.
+We have not decided whether borrowers should be identified by student ID or by name only.
+I do not want personal information in the sample database. Could we use fake IDs such as DEMO-001?
+
+ChatGPT said:
+Yes. Fictional IDs make the demo reproducible and avoid exposing real student details.
+For the lab, store the fake borrower ID and perhaps a display name such as Sample Borrower. Do not claim that the demo is connected to a university identity system.
+You could validate that an item is available before creating a loan and reject a return for an item that has no active loan.
+
+You said:
+Let's use fictional borrower IDs. We decided that the demo will not collect real student information.
+I also want invalid actions to show a helpful message instead of crashing.
+We need to decide how many example items to include; I think five is enough for the presentation.
+
+ChatGPT said:
+Five items should be enough to demonstrate available, borrowed, and overdue states without making the menu crowded.
+For errors, explain what happened and how to correct it, such as “This item is already on loan. Choose an available item.”
+Keep input validation simple: required fields must not be blank, and dates should use one documented format.
+
+You said:
+I accept five sample items and the helpful validation messages.
+One teammate suggested adding a login screen. I do not think we need it because this is a local classroom demonstration, so let's leave login out.
+The date format is still undecided. Our group has used YYYY-MM-DD before.
+
+ChatGPT said:
+That format is readable and sorts naturally when stored consistently. You could use YYYY-MM-DD for checkout, due, and return dates.
+A login screen would add work without demonstrating the core lending rules. You can list authentication as a future improvement if your instructor asks about it.
+The demo could show one item checked out and overdue, one checked out but not overdue, and the remaining items available.
+
+You said:
+We will use YYYY-MM-DD for dates. The team agreed not to build login for the first version.
+Please make sure a returned item becomes available again, and that the old loan remains visible in history.
+Next, we need to write the SQLite schema and prepare the five fictional item records.
+
+ChatGPT said:
+Keeping completed loan rows preserves a useful history. An active loan can be identified by a missing return date, while a returned loan has a return date.
+Before the demo, test the sequence with the same item: available, checked out, returned, then checked out again.
+You could add CSV export or search later, but only after the core workflow is stable.
+
+You said:
+We have implemented adding and listing items. Checkout works for available equipment, but we found that the same item can be checked out twice if the menu is used quickly.
+We have not added the overdue report yet. We want to finish the core workflow before adding search or export.
+
+ChatGPT said:
+Check availability and create the active loan as one database operation. Also enforce the active-loan rule in the application so a second checkout is refused.
+For the overdue report, compare the due date with the chosen demo date and include only loans without a return date.
+Your stated scope still looks suitable for eight weeks: complete the four actions, handle errors, document setup, and rehearse the explanation.
+
+You said:
+We fixed the duplicate checkout issue and added the overdue report using a fixed demo date.
+The return action now makes an item available and keeps the completed loan in history.
+The remaining open question is whether to show loan history in the main menu or only in the report. We need to rehearse the demo and ask our instructor which view is clearer.

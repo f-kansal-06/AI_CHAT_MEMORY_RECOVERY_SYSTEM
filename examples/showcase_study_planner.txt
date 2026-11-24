@@ -1,0 +1,75 @@
+You said:
+I am preparing for three exams over the next two weeks: databases, operating systems, and computer networks.
+I can study about two hours each weekday and four hours on Saturday. Sunday is usually for family, so I would prefer to keep it free.
+Databases is my weakest subject, but I do not want a schedule that leaves no time for review.
+I also have classes until 4 p.m. and do not want to study after 9 p.m.
+
+Gemini said:
+Start each session with a specific task, such as solving SQL queries or tracing a scheduling algorithm.
+A possible split is three sessions for databases, two for operating systems, and two for networks each week, with a short review at the end of each study day.
+Use short study blocks and breaks, and keep one weekly review period for topics you found difficult.
+
+You said:
+I prefer 45-minute study blocks and a 10-minute break between them. I want to use that format.
+Please reserve Saturday's final hour for reviewing the week's notes rather than starting a new topic.
+I can do two blocks on weekdays, but I am not sure whether four hours on Saturday will be too much.
+
+Gemini said:
+Two focused blocks fit your weekday limit with room for a short break. On Saturday, try two blocks in the morning, a longer rest, then one or two blocks followed by your review hour.
+Stop if concentration drops; planned hours are a guide, not a requirement to study when exhausted.
+You could rotate subjects within a day so you do not spend every session on just one topic.
+
+You said:
+Let's use the rotation and keep Saturday's review hour. I do not want to schedule study after 9 p.m.
+For databases, I need SQL joins, normalization, transactions, and indexing. I understand basic SELECT queries but struggle to choose the right join.
+For operating systems, the exam covers processes, scheduling, memory, and deadlocks.
+
+Gemini said:
+For joins, draw the two tables and mark which rows should remain before writing the query. Then compare inner, left, and right joins on the same small example.
+For operating systems, practice tracing process state changes and scheduling timelines rather than only rereading definitions.
+You could keep a short error log with the question, why your answer failed, and the corrected idea.
+
+You said:
+I will try the error log. Networks covers the OSI model, TCP versus UDP, IP addressing, and routing.
+I tend to spend too long making notes look neat, so please keep the plan focused on practice questions and short explanations.
+The exam dates are Monday for databases, Wednesday for operating systems, and Friday for networks, all in the second week.
+
+Gemini said:
+Use notes only to record facts or mistakes you need to revisit. For each networking topic, draw a small diagram or explain one example aloud.
+Because the exams are spread across the week, shift time toward the next exam after each earlier exam is finished.
+Keep a light review for later subjects during the first exam days so they do not become completely cold.
+
+You said:
+That makes sense. I want a light networks review before Monday, then more networks practice after the operating systems exam.
+I do not want to study a new topic on the evening before an exam; I would rather review mistakes and sleep on time.
+I am still unsure whether I should spend more time on databases or keep the subjects evenly balanced.
+
+Gemini said:
+Try a short diagnostic first: solve a few representative problems in each subject without notes and mark confidence as well as correctness.
+Use the results to adjust the next week's time. Add one extra database block only if the diagnostic shows a clear gap.
+The day before each exam, review the error log and key examples instead of opening a large new topic.
+
+You said:
+I agree with doing a diagnostic before changing the subject split. The exact weekly balance is unresolved until I see those results.
+I will take the diagnostic tomorrow and list the questions I got wrong.
+Please keep the plan flexible if a class assignment takes one of the planned weekday blocks.
+
+Gemini said:
+If a weekday block is lost, move the highest-priority missed task into the next available block rather than doubling the workload that evening.
+Keep Sunday free as requested. If you choose to use some Sunday time later, treat that as optional catch-up, not part of the base schedule.
+After the diagnostic, update the plan once and review it midweek; changing it every day can take time away from studying.
+
+You said:
+The diagnostic showed that I missed most of the join questions and two deadlock problems. I did reasonably well on basic networking definitions.
+I want one extra database block and one extra operating systems block next week, while keeping the Saturday review hour.
+I will not add study time after 9 p.m. or schedule anything on Sunday.
+
+Gemini said:
+That adjustment targets the gaps you found without removing all practice from networks. In the extra database block, compare join types with small tables; in the operating systems block, trace deadlock examples.
+At the midweek check, look at whether you can solve new questions without notes. If not, use another practice example rather than rewriting all your notes.
+Your next action is to put the blocks on a calendar and prepare a small set of practice questions for each subject.
+
+You said:
+I have added the blocks to my calendar. A class assignment may take Wednesday evening, so that block might need to move to Thursday.
+The plan is: 45-minute blocks, 10-minute breaks, Sunday free, Saturday review, no studying after 9 p.m., and extra practice for joins and deadlocks.
+I will check progress after the first week and adjust only if the practice results show a problem.
